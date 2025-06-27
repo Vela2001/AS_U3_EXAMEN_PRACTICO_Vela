@@ -186,13 +186,14 @@ Captura del contenido  (Anexo G)
 
 ## 8. ANÁLISIS DE RIESGOS
 
-| Hallazgo | Riesgo asociado                                          | Impacto | Probabilidad | Nivel de Riesgo |
-|----------|----------------------------------------------------------|---------|--------------|-----------------|
-| 1        | Red privada sin autenticación ni filtrado de tráfico     | Medio   | Alta         | Alto            |
-| 2        | Credenciales sensibles en texto plano en archivo `.env` | Alto    | Alta         | Crítico         |
-| 3        | Ausencia de segregación de entornos (dev/prod)           | Medio   | Media        | Medio           |
-| 4        | Máquina `proxy` no creada, impide flujo completo         | Medio   | Alta         | Alto            |
-| 5        | Logs personalizados sin rotación ni protección           | Medio   | Media        | Medio           |
+| Riesgo                                  | Causa (Vínculo a Anexo)    | Impacto (A/M/B) | Probabilidad (%) | Nivel de Riesgo |
+|-----------------------------------------|-----------------------------|------------------|-------------------|------------------|
+| Credenciales sin cifrado                | .env (Anexo D)              | Alto             | 90%               | Crítico          |
+| Puertos sin restricciones               | Vagrantfile (Anexo C)       | Medio            | 80%               | Alto             |
+| Falta de segregación de entornos        | recipes/ (Anexo G)          | Medio            | 75%               | Alto             |
+| Logs limitados o ausentes               | /var/log (Anexo F)          | Alto             | 70%               | Alto             |
+| Diseño inseguro de red                  | Vagrantfile (Anexo C)       | Medio            | 60%               | Medio            |
+
 
 ---
 
@@ -218,6 +219,14 @@ A pesar de contar con servicios básicos como Apache y WordPress en funcionamien
 
 
 ## 11. PLAN DE ACCIÓN Y SEGUIMIENTO
+
+| Hallazgo | Recomendación                                                                 | Responsable         | Fecha Comprometida |
+|----------|-------------------------------------------------------------------------------|---------------------|---------------------|
+| 1        | Implementar almacenamiento cifrado de credenciales mediante variables seguras o uso de vaults. | Equipo de DevOps     | 05/07/2025          |
+| 2        | Restringir los puertos expuestos en `Vagrantfile` y aplicar controles de acceso. | Administrador de Sistemas | 04/07/2025          |
+| 3        | Establecer condicionales para segregar entornos de desarrollo y producción en las recetas Chef. | Desarrollador de Automatización | 06/07/2025          |
+| 4        | Configurar y asegurar logs para todos los servicios críticos como Apache y MySQL. | Administrador de Servidores | 06/07/2025          |
+| 5        | Revisar configuración de red y evitar uso de `private_network` sin autenticación en producción. | Equipo de Infraestructura | 07/07/2025          |
 
 
 
