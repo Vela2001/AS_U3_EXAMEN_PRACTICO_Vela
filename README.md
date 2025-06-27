@@ -234,6 +234,12 @@ A pesar de contar con servicios básicos como Apache y WordPress en funcionamien
 | 5        | Revisar configuración de red y evitar uso de `private_network` sin autenticación en producción. | Equipo de Infraestructura | 07/07/2025          |
 
 
+## 12. ANEXOS
+### Anexo A: Captura del comando `vagrant status`
 
+![Anexo A](Evidencias/ANEXOA.jpeg)
 
+### Anexo B: Captura del comando `WORDPRESS`
+
+![Anexo B](Evidencias/ANEXOB.jpeg)
 
