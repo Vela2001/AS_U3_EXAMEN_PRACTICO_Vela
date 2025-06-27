@@ -114,6 +114,7 @@ El archivo Vagrantfile define redes privadas mediante private_network, pero no e
 
 **Evidencia:**  
 Captura del `Vagrantfile` (Anexo C)
+![Anexo C](C:/avv/ASU3/AS_U3_EXAMEN_PRACTICO_Vela/Evidencias/ANEXOC.JPEG)
 
 📍 **Ubicación:**  
 ```ruby
@@ -133,6 +134,7 @@ Se identificaron credenciales de acceso a la base de datos (usuario y contraseñ
 
 **Evidencia:**  
 Captura del archivo .env (Anexo D)
+![Anexo D](C:/avv/ASU3/AS_U3_EXAMEN_PRACTICO_Vela/Evidencias/ANEXOD.JPEG)
 
 **Criticidad:** Alto  
 **Criterio vulnerado:** Control de acceso y confidencialidad (ISO/IEC 27001 - A.9.2.3)
@@ -147,6 +149,7 @@ No se encontró ninguna distinción entre entornos en las recetas Chef. No se em
 
 **Evidencia:**  
 Captura del archivo `cookbooks/recipes/default.rb` sin condicionales de entorno (Anexo E)
+![Anexo E](C:/avv/ASU3/AS_U3_EXAMEN_PRACTICO_Vela/Evidencias/ANEXOE.JPEG)
 
 
 **Criticidad:** Medio  
@@ -162,6 +165,7 @@ La máquina virtual `proxy` aparece como “not created” al ejecutar el comand
 
 **Evidencia:**  
 Captura de salida de `vagrant status` (Anexo F)
+![Anexo F](C:/avv/ASU3/AS_U3_EXAMEN_PRACTICO_Vela/Evidencias/ANEXOF.JPEG)
 
 
 **Criticidad:** Medio  
@@ -177,6 +181,7 @@ Aunque existen logs activos como wordpress_access.log y wordpress_error.log en /
 
 **Evidencia:**  
 Captura del contenido  (Anexo G)
+![Anexo G](C:/avv/ASU3/AS_U3_EXAMEN_PRACTICO_Vela/Evidencias/ANEXOG.JPEG)
 
 **Criticidad:** Alto  
 **Criterio vulnerado:** Control de registros de seguridad (ISO/IEC 27001 - A.12.4)
