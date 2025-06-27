@@ -59,33 +59,44 @@ Determinar el cumplimiento de buenas prácticas en el diseño del Vagrantfile, c
 
 
 ## 4. ALCANCE DE LA AUDITORÍA
+   
+La auditoría tuvo como alcance el entorno de despliegue continuo proporcionado en el repositorio Chef_Vagrant_Wp-main, el cual simula una infraestructura compuesta por tres máquinas virtuales (database, wordpress y proxy), configuradas mediante Vagrant y aprovisionadas con Chef Solo.
 
-- Ámbitos evaluados (tecnológico, organizacional, normativo, etc.)
-- Sistemas y procesos incluidos
-- Unidades o áreas auditadas
-- Periodo auditado
+Ámbitos evaluados
+
+Tecnológico: Revisión de configuraciones en infraestructura como código (Vagrantfile, recetas Chef).
+
+De seguridad de la información: Análisis de prácticas relacionadas con autenticación, exposición de servicios y manejo de credenciales.
+
+Operativo: Validación de logs, estados de servicios y ejecución del aprovisionamiento automático.
+
+Normativo: Evaluación del cumplimiento de buenas prácticas conforme a estándares como ISO/IEC 27001 y marcos de control como COBIT 2019.
 
 
 
 ## 5. NORMATIVA Y CRITERIOS DE EVALUACIÓN
+   
+Durante el proceso de auditoría se utilizaron como base los siguientes marcos normativos, estándares técnicos y buenas prácticas comúnmente aceptadas en la industria de tecnologías de la información:
 
-Lista de normas, marcos de referencia o políticas aplicadas como base para la auditoría. Ejemplos:
+ISO/IEC 27001:2022 – Sistema de gestión de la seguridad de la información (SGSI), utilizado para verificar el cumplimiento de controles relacionados con la confidencialidad, integridad y disponibilidad de los activos.
 
-- COBIT 2019  
-- ISO/IEC 27001:2022  
-- Ley de Protección de Datos Personales [local]  
-- Políticas internas de TI de la entidad
+COBIT 2019 – Marco de gobierno y gestión de TI, empleado para evaluar el alineamiento de la infraestructura tecnológica con los objetivos organizacionales, control de cambios, segregación de funciones y políticas de configuración.
+
+Ley N.º 29733 – Ley de Protección de Datos Personales (Perú) – Se consideró como referencia legal en el manejo de credenciales, configuración de accesos y exposición de servicios en el entorno auditado.
+
+Buenas prácticas en Infraestructura como Código (IaC) – Se evaluó el uso correcto de variables, modularización, control de versiones, uso de archivos .env, y la protección de información sensible en entornos automatizados.
+
+Guías de hardening y seguridad básica de sistemas Ubuntu Server 20.04 – Para revisar configuraciones predeterminadas, servicios habilitados, puertos abiertos y archivos de log habilitados.
 
 
 ## 6. METODOLOGÍA Y ENFOQUE
 
-Descripción del enfoque utilizado (basado en riesgos, cumplimiento, mixto) y métodos aplicados:
+La auditoría fue desarrollada aplicando un enfoque mixto, combinando técnicas de evaluación por cumplimiento normativo con análisis de riesgos asociados a la configuración e implementación del entorno virtual auditado.
 
-- Entrevistas con usuarios y responsables de TI  
-- Inspección de documentos y registros  
-- Pruebas técnicas (análisis de logs, escaneo de vulnerabilidades)  
-- Revisión de configuraciones  
-- Aplicación de listas de verificación
+### Enfoque aplicado
+- Basado en riesgos: Se identificaron amenazas potenciales derivadas de malas prácticas de configuración, exposición innecesaria de servicios, y falta de controles de seguridad en el entorno de desarrollo.
+
+- Basado en cumplimiento: Se contrastó la implementación observada con los controles establecidos por marcos de referencia como ISO/IEC 27001, COBIT 2019 y buenas prácticas de Infraestructura como Código (IaC).
 
 
 ## 7. HALLAZGOS Y OBSERVACIONES
