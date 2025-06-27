@@ -134,12 +134,6 @@ Se identificaron credenciales de acceso a la base de datos (usuario y contraseñ
 **Evidencia:**  
 Captura del archivo .env (Anexo D)
 
-📍 **Ubicación:**  
-```ruby
-DB_USER=wordpress
-DB_PSWD=Epnewman123
-```
-
 **Criticidad:** Alto  
 **Criterio vulnerado:** Control de acceso y confidencialidad (ISO/IEC 27001 - A.9.2.3)
 
@@ -154,10 +148,6 @@ No se encontró ninguna distinción entre entornos en las recetas Chef. No se em
 **Evidencia:**  
 Captura del archivo `cookbooks/recipes/default.rb` sin condicionales de entorno (Anexo E)
 
-📍 **Ubicación esperada (ausente):**  
-```ruby
-if node.chef_environment == "production"
-```
 
 **Criticidad:** Medio  
 **Criterio vulnerado:** Buenas prácticas de DevOps (COBIT 2019 - DSS06)
@@ -173,10 +163,6 @@ La máquina virtual `proxy` aparece como “not created” al ejecutar el comand
 **Evidencia:**  
 Captura de salida de `vagrant status` (Anexo F)
 
-📍 **Ubicación:**  
-```
-proxy                     not created (virtualbox)
-```
 
 **Criticidad:** Medio  
 **Criterio vulnerado:** Integridad del entorno automatizado (DevOps IaC)
@@ -187,55 +173,53 @@ proxy                     not created (virtualbox)
 **Objetivo relacionado:** Analizar la gestión de registros de logs relevantes en el sistema operativo.
 
 **Descripción:**  
-No se encontraron logs activos configurados en Apache ni MySQL. La ausencia de estos limita la trazabilidad y auditoría de eventos dentro del sistema.
+Aunque existen logs activos como wordpress_access.log y wordpress_error.log en /var/log/, estos fueron generados manualmente o por la configuración personalizada, y no están incluidos en el sistema de rotación automática (logrotate). Tampoco se han aplicado permisos restrictivos o protección contra escritura/modificación.
 
 **Evidencia:**  
-Captura del contenido de `/var/log/apache2` o salida de `ls -lh /var/log` (Anexo G)
-
-📍 **Comando desde la VM Wordpress:**  
-```bash
-ls -lh /var/log/apache2
-```
+Captura del contenido  (Anexo G)
 
 **Criticidad:** Alto  
 **Criterio vulnerado:** Control de registros de seguridad (ISO/IEC 27001 - A.12.4)
 
 
 
+
 ## 8. ANÁLISIS DE RIESGOS
 
-Evaluación del impacto y probabilidad de los riesgos identificados, asociados a los hallazgos encontrados.
+| Hallazgo | Riesgo asociado                                          | Impacto | Probabilidad | Nivel de Riesgo |
+|----------|----------------------------------------------------------|---------|--------------|-----------------|
+| 1        | Red privada sin autenticación ni filtrado de tráfico     | Medio   | Alta         | Alto            |
+| 2        | Credenciales sensibles en texto plano en archivo `.env` | Alto    | Alta         | Crítico         |
+| 3        | Ausencia de segregación de entornos (dev/prod)           | Medio   | Media        | Medio           |
+| 4        | Máquina `proxy` no creada, impide flujo completo         | Medio   | Alta         | Alto            |
+| 5        | Logs personalizados sin rotación ni protección           | Medio   | Media        | Medio           |
 
-| Hallazgo | Riesgo asociado | Impacto | Probabilidad | Nivel de Riesgo |
-|----------|-----------------|---------|--------------|-----------------|
-| [N°]     | [Descripción]   | Alto/Medio/Bajo | Alta/Media/Baja | Alto/Medio/Bajo |
-
+---
 
 ## 9. RECOMENDACIONES
-¿Qué debe hacerse al respecto para mejorar, corregir o mitigar los riesgos?. Propuestas técnicas y organizativas para mitigar los riesgos y subsanar los hallazgos. Cada recomendación debe estar vinculada al hallazgo correspondiente.
 
+1. **Aplicar controles de red y autenticación:** Configurar reglas de firewall o mecanismos de autenticación en las redes privadas definidas por Vagrant para evitar exposición innecesaria.
+
+2. **Proteger credenciales:** Mover las variables sensibles como `DB_PSWD` fuera del `.env` o usar herramientas como HashiCorp Vault, AWS Secrets Manager o cifrado con GPG. Asegurarse de que `.env` esté excluido del repositorio (`.gitignore`).
+
+3. **Segregar entornos dev/prod:** Incorporar lógica condicional en las recetas de Chef (`if node.chef_environment == 'production'`) para evitar que configuraciones de prueba se apliquen en producción.
+
+4. **Solucionar errores de aprovisionamiento:** Verificar y corregir las recetas o configuraciones que impiden la creación del nodo `proxy`, garantizando que el entorno refleje la arquitectura prevista.
+
+5. **Configurar logrotate para los logs personalizados:** Incluir los archivos `wordpress_access.log` y `wordpress_error.log` en políticas de rotación (`/etc/logrotate.d/`) y aplicar permisos adecuados para protegerlos de modificaciones no autorizadas.
+
+---
 
 ## 10. CONCLUSIONES
-¿Qué se ha encontrado? ¿Cuál es el estado general del sistema auditado?. Síntesis evaluativa sobre el estado de control y gestión de los sistemas de información auditados. Indicar si los controles existentes son adecuados, eficaces y cumplen con la normativa aplicable.
+
+La auditoría realizada permitió identificar una serie de configuraciones inseguras y malas prácticas en el entorno DevIA360 desplegado con Vagrant y Chef. Si bien el entorno cumple con aspectos básicos de funcionamiento, se hallaron debilidades críticas como el manejo inseguro de credenciales, la falta de segmentación de entornos y el despliegue incompleto del proxy. 
+
+A pesar de contar con servicios básicos como Apache y WordPress en funcionamiento, el entorno aún no cumple con estándares aceptables de seguridad y control. Se recomienda aplicar las mejoras propuestas para mitigar los riesgos identificados y fortalecer la postura de seguridad del entorno automatizado.
 
 
 ## 11. PLAN DE ACCIÓN Y SEGUIMIENTO
 
-Propuesta de plan de acción acordado con la entidad auditada:
-
-| Hallazgo | Recomendación | Responsable | Fecha Comprometida |
-|----------|----------------|-------------|---------------------|
-| [N°]     | [Texto]         | [Área o persona] | [dd/mm/aaaa]     |
 
 
 
-## 12. ANEXOS
-
-Incluir documentos de respaldo como:
-
-- Cuestionarios aplicados  
-- Capturas de pantalla  
-- Registros de logs  
-- Políticas internas revisadas  
-- Cualquier otro elemento que sustente los hallazgos
 
