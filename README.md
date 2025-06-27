@@ -40,14 +40,20 @@ Contexto general de la entidad, naturaleza de sus sistemas de información, estr
 
 ## 3. OBJETIVOS DE LA AUDITORÍA
 
-Definición del objetivo general y los objetivos específicos, orientados a evaluar aspectos como:
+Objetivo General
+Evaluar la seguridad, configuración y buenas prácticas del entorno de despliegue continuo implementado con Vagrant y Chef en el proyecto DevIA360, a fin de identificar vulnerabilidades, riesgos y oportunidades de mejora en la infraestructura definida como código.
 
-- Seguridad de la información
-- Continuidad del negocio
-- Gestión de cambios y configuración
-- Cumplimiento normativo
-- Integridad y disponibilidad de datos
-- etc
+Objetivos Específicos
+Verificar la exposición de servicios a través de puertos redirigidos sin mecanismos de control de acceso o restricción.
+
+Evaluar el manejo de credenciales sensibles dentro de los archivos de configuración del entorno, incluyendo recetas y atributos de Chef.
+
+Revisar la existencia de segregación de entornos (desarrollo/producción) en las recetas de automatización implementadas.
+
+Analizar la falta de registros o archivos de logs relevantes en el sistema operativo que limiten la trazabilidad de actividades.
+
+Determinar el cumplimiento de buenas prácticas en el diseño del Vagrantfile, como el uso de redes privadas y autenticación, y su impacto en la seguridad del entorno.
+
 
 
 ## 4. ALCANCE DE LA AUDITORÍA
