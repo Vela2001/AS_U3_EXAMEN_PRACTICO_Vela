@@ -99,15 +99,107 @@ La auditoría fue desarrollada aplicando un enfoque mixto, combinando técnicas 
 - Basado en cumplimiento: Se contrastó la implementación observada con los controles establecidos por marcos de referencia como ISO/IEC 27001, COBIT 2019 y buenas prácticas de Infraestructura como Código (IaC).
 
 
+
 ## 7. HALLAZGOS Y OBSERVACIONES
 
-Presentación detallada de los hallazgos, estructurados por áreas evaluadas. Cada hallazgo debe incluir:
+### 🔧 Área: Revisión de Configuraciones y Seguridad
 
-- Descripción del hallazgo  
-- Evidencia objetiva  
-- Grado de criticidad (alto, medio, bajo)  
-- Criterio vulnerado  
-- Causa y efecto
+---
+
+### Hallazgo 1: Red privada sin mecanismos de autenticación o control  
+**Objetivo relacionado:** Determinar el cumplimiento de buenas prácticas en el diseño del Vagrantfile, como el uso de redes privadas y autenticación.  
+
+**Descripción:**  
+El archivo Vagrantfile define redes privadas mediante private_network, pero no establece mecanismos de autenticación, firewalls o filtrado de IPs. Esto representa un riesgo si las máquinas virtuales se conectan a través de un entorno compartido sin control.
+
+**Evidencia:**  
+Captura del `Vagrantfile` (Anexo C)
+
+📍 **Ubicación:**  
+```ruby
+db.vm.network "private_network", ip: ENV["DB_IP"]
+```
+
+**Criticidad:** Medio  
+**Criterio vulnerado:** Seguridad en diseño de red (ISO/IEC 27001 - A.13.1)
+
+---
+
+### Hallazgo 2: Manejo inseguro de credenciales sensibles  
+**Objetivo relacionado:** Evaluar el manejo de credenciales sensibles dentro de los archivos de configuración del entorno.  
+
+**Descripción:**  
+Se identificaron credenciales de acceso a la base de datos (usuario y contraseña) en texto plano dentro del archivo .env, el cual es cargado por vagrant-env y expuesto en el Vagrantfile. No existen medidas de protección adicionales como cifrado, control de acceso o exclusión del repositorio.
+
+**Evidencia:**  
+Captura del archivo .env (Anexo D)
+
+📍 **Ubicación:**  
+```ruby
+DB_USER=wordpress
+DB_PSWD=Epnewman123
+```
+
+**Criticidad:** Alto  
+**Criterio vulnerado:** Control de acceso y confidencialidad (ISO/IEC 27001 - A.9.2.3)
+
+---
+
+### Hallazgo 3: Falta de segregación de entornos  
+**Objetivo relacionado:** Revisar la existencia de segregación de entornos (desarrollo/producción) en las recetas de automatización.  
+
+**Descripción:**  
+No se encontró ninguna distinción entre entornos en las recetas Chef. No se emplea lógica basada en `node.chef_environment` ni se aplican configuraciones diferentes para entornos productivos.
+
+**Evidencia:**  
+Captura del archivo `cookbooks/recipes/default.rb` sin condicionales de entorno (Anexo E)
+
+📍 **Ubicación esperada (ausente):**  
+```ruby
+if node.chef_environment == "production"
+```
+
+**Criticidad:** Medio  
+**Criterio vulnerado:** Buenas prácticas de DevOps (COBIT 2019 - DSS06)
+
+---
+
+### Hallazgo 4: Proxy no desplegado correctamente  
+**Objetivo relacionado:** Determinar el cumplimiento del aprovisionamiento completo del entorno automatizado.  
+
+**Descripción:**  
+La máquina virtual `proxy` aparece como “not created” al ejecutar el comando `vagrant up` por lo que se debio hacer un `vagrant up proxy` luego de lo ya establecido , lo que afecta la evaluación del entorno completo y el flujo de red esperada.
+
+**Evidencia:**  
+Captura de salida de `vagrant status` (Anexo F)
+
+📍 **Ubicación:**  
+```
+proxy                     not created (virtualbox)
+```
+
+**Criticidad:** Medio  
+**Criterio vulnerado:** Integridad del entorno automatizado (DevOps IaC)
+
+---
+
+### Hallazgo 5: Ausencia de logs activos en el sistema  
+**Objetivo relacionado:** Analizar la gestión de registros de logs relevantes en el sistema operativo.
+
+**Descripción:**  
+No se encontraron logs activos configurados en Apache ni MySQL. La ausencia de estos limita la trazabilidad y auditoría de eventos dentro del sistema.
+
+**Evidencia:**  
+Captura del contenido de `/var/log/apache2` o salida de `ls -lh /var/log` (Anexo G)
+
+📍 **Comando desde la VM Wordpress:**  
+```bash
+ls -lh /var/log/apache2
+```
+
+**Criticidad:** Alto  
+**Criterio vulnerado:** Control de registros de seguridad (ISO/IEC 27001 - A.12.4)
+
 
 
 ## 8. ANÁLISIS DE RIESGOS
